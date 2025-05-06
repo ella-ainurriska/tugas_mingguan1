@@ -42,11 +42,11 @@ class TodoHomePageState extends State<TodoHomePage> {
     }
   }
 
-  void _removeTodo(int index) {
-    setState(() {
-      _todos.removeAt(index);
-    });
-  }
+  // void _removeTodo(int index) {
+  //   setState(() {
+  //     _todos.removeAt(index);
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,20 +61,29 @@ class TodoHomePageState extends State<TodoHomePage> {
               padding: const EdgeInsets.all(16.0),
               itemCount: _todos.length,
               itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(_todos[index]),
-                    trailing: IconButton( 
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => _removeTodo(index),
+                return Dismissible(key: Key(_todos[index]),
+                direction: DismissDirection.endToStart,
+                onDismissed: (direction) {
+                  setState(() {
+                    _todos.removeAt(index);
+                  });
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Tugas dihapus'),
+                      ),
+                    );
+                  },
+                child: Card(
+                    child: ListTile(
+                      title: Text(_todos[index]),
                     ),
-                    onLongPress: () => _removeTodo(index),
                   ),
                 );
               },
             ),
           ),
-          SafeArea(
+         SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -83,18 +92,22 @@ class TodoHomePageState extends State<TodoHomePage> {
                   child: TextField(
                     controller: _controller,
                     decoration: const InputDecoration(
-                      labelText: 'tambahkan tugas',
+                      labelText: 'Tambahkan tugas',
                       border: OutlineInputBorder(),
                     ),
-                  )),
-                  const SizedBox(width: 8),
-                  ElevatedButton(onPressed:_addTodo, child: const Text('Tambah')),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: _addTodo,
+                  child: const Text('Tambah'),
+                ),
               ],
             ),
-           ),
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    )
+   );
   }
 }
