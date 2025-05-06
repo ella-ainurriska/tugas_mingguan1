@@ -25,10 +25,10 @@ class TodoHomePage extends StatefulWidget {
   const TodoHomePage({super.key});
 
   @override
-  _TodoHomePageState createState() => _TodoHomePageState();
+  TodoHomePageState createState() => TodoHomePageState();
 }
 
-class _TodoHomePageState extends State<TodoHomePage> {
+class TodoHomePageState extends State<TodoHomePage> {
   final List<String> _todos = []; // Daftar tugas
   final TextEditingController _controller = TextEditingController(); // Untuk input teks
 
@@ -47,54 +47,53 @@ class _TodoHomePageState extends State<TodoHomePage> {
       _todos.removeAt(index);
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Daftar Tugas'),
+        title: const Text('daftar Tugas'),
+        centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(16.0),
+              itemCount: _todos.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ListTile(
+                    title: Text(_todos[index]),
+                    trailing: IconButton( 
+                    icon: const Icon(Icons.delete),
+                    onPressed: () => _removeTodo(index),
+                    ),
+                    onLongPress: () => _removeTodo(index),
+                  ),
+                );
+              },
+            ),
+          ),
+          SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _controller,
                     decoration: const InputDecoration(
-                      labelText: 'Tambahkan Tugas',
+                      labelText: 'tambahkan tugas',
                       border: OutlineInputBorder(),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: _addTodo,
-                  child: const Text('Tambah'),
-                )
+                  )),
+                  const SizedBox(width: 8),
+                  ElevatedButton(onPressed:_addTodo, child: const Text('Tambah')),
               ],
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _todos.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(_todos[index]),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => _removeTodo(index),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            )
-          ],
-        ),
+           ),
+          ),
+        ],
       ),
     );
   }
