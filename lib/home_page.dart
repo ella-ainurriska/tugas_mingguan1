@@ -47,12 +47,21 @@ class TodoHomePageState extends State<TodoHomePage> {
                     _todos.removeAt(index);
                   });
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Tugas dihapus'),
-                      ),
-                    );
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //     const SnackBar(
+                  //       content: Text('Delete'),
+                  //     ),
+                  //   );
                   },
+                 background: Container(
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.all(20),
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                ),
                 child: Card(
                     child: ListTile(
                       title: Text(_todos[index]),
