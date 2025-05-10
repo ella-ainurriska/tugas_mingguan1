@@ -9,6 +9,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _controller = TextEditingController();
+  List toDolist = [];
+
+  void saveNewTask() {
+    setState(() {
+      toDolist.add([_controller.text, false]);
+      _controller.clear();
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -19,6 +27,14 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
+      ),
+      body: ListView.builder(
+        itemCount: toDolist.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(toDolist[index][0]),
+          );
+        },
       ),
       floatingActionButton: Row(
         children: [
@@ -40,11 +56,11 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             )
-           )
+           ),
            FloatingActionButton(
-            onPressed: saveNewTask,
+             onPressed: saveNewTask,
             child: const Icon(Icons.add),
-            ),
+           ),
         ],
       ),
     );
